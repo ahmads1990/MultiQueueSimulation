@@ -248,6 +248,7 @@ namespace MultiQueueSimulation
             //SelectionMethod
             SelectionMethod = (Enums.SelectionMethod)comboBox2.SelectedIndex + 1;
 
+            simulationSystem = new SimulationSystem();
             //assign data
             simulationSystem.NumberOfServers = serversCount;
             simulationSystem.Servers = serversList;

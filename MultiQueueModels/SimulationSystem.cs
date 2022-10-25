@@ -28,7 +28,7 @@ namespace MultiQueueModels
         public List<SimulationCase> SimulationTable { get; set; }
         public PerformanceMeasures PerformanceMeasures { get; set; }
 
-
+        public void startSimulation() { }
         public void DistributionTimeCustomer(List<int> inter_arrival_time, List<decimal> probability)
         {
             int customerCount = inter_arrival_time.Count;
