@@ -262,6 +262,8 @@ namespace MultiQueueModels
             calculate_service_time(ref next_customer);
             Servers[next_customer.AssignedServer.ID - 1].TotalWorkingTime += next_customer.ServiceTime;
         }
+
+        /////SIMULATION TABLE//////////
         //go through each customer and make call function MakeRow
         public List<SimulationCase> MakeTable(int NoCusts, List<int> Servers)
         {
@@ -273,7 +275,7 @@ namespace MultiQueueModels
             return totalTable;
 
         }
-        public SimulationCase MakeRow(int CustNo, List<int> Servers)
+        public SimulationCase MakeRow(int CustNo, List<int> Servers )
         {
             Random rn = new Random();
             SimulationCase sm = new SimulationCase();
@@ -288,15 +290,17 @@ namespace MultiQueueModels
 
             }
             else { sm.RandomInterArrival = rn.Next(1, 100); }
-            calculate_service_time(ref sm);
+            //random serveice time
+            sm.RandomService = rn.Next(1, 100);
             select_Random(ref sm, Servers);
-
-            Selection_methods(ref sm, Servers);
-            select_HighestPriority(ref sm, Servers);
+            //select server
+             Selection_methods(ref sm, Servers);
             check_Priority(ref sm);
-            select_LeastUtilization(ref sm, Servers);
+           //calculate service time
+           
             calculate_service_time(ref sm);
-            //time in queue????
+            //time in qeueu
+            sm.TimeInQueue = sm.InterArrival - sm.StartTime;
             return sm;
 
         }
