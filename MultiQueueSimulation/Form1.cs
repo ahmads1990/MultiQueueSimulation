@@ -193,7 +193,7 @@ namespace MultiQueueSimulation
             {
                 //create entry for current server
                 Server currServer = new Server();
-                currServer.ID = server;
+                currServer.ID = server + 1;
                 //get the datagrid view for the current tab for the server
                 DataGridView dgv = serversTabControl.TabPages[server].Controls.OfType<DataGridView>().FirstOrDefault();
                 try
