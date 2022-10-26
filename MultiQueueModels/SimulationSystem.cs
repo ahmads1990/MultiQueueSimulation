@@ -262,6 +262,26 @@ private void Selection_methods(ref SimulationCase next_customer, List<int> serve
             calculate_service_time(ref next_customer);
             Servers[next_customer.AssignedServer.ID - 1].TotalWorkingTime += next_customer.ServiceTime;
         }
+        public SimulationCase MakeRow(int CustNo)
+        {
+            Random rn = new Random();
+            SimulationCase sm = new SimulationCase();
+            sm.CustomerNumber = CustNo;
+            if (CustNo == 1)
+            {
+                sm.ArrivalTime = 0;
+                sm.RandomInterArrival = 0;
+                sm.InterArrival = 0;
+                sm.RandomService = rn.Next(1, 100);
+                 
 
+            }
+            else { sm.RandomInterArrival = rn.Next(1, 100); }
+            calculate_service_time(ref sm);
+            //how to get list of servers
+           // Selection_methods(ref sm,);
+            return sm;
+
+        }
     }
 }
