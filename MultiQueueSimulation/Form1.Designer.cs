@@ -30,6 +30,7 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.btnLoadFiles = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.InterarrivalTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -48,7 +49,6 @@
             this.txtbx_NoServers = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.btnLoadFiles = new System.Windows.Forms.Button();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -103,6 +103,17 @@
             this.tabPage1.Size = new System.Drawing.Size(675, 435);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Input Data";
+            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
+            // 
+            // btnLoadFiles
+            // 
+            this.btnLoadFiles.Location = new System.Drawing.Point(458, 373);
+            this.btnLoadFiles.Name = "btnLoadFiles";
+            this.btnLoadFiles.Size = new System.Drawing.Size(75, 23);
+            this.btnLoadFiles.TabIndex = 14;
+            this.btnLoadFiles.Text = "Load Files";
+            this.btnLoadFiles.UseVisualStyleBackColor = true;
+            this.btnLoadFiles.Click += new System.EventHandler(this.btnLoadFiles_Click);
             // 
             // button1
             // 
@@ -266,16 +277,6 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Simulation Table";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // btnLoadFiles
-            // 
-            this.btnLoadFiles.Location = new System.Drawing.Point(458, 373);
-            this.btnLoadFiles.Name = "btnLoadFiles";
-            this.btnLoadFiles.Size = new System.Drawing.Size(75, 23);
-            this.btnLoadFiles.TabIndex = 14;
-            this.btnLoadFiles.Text = "Load Files";
-            this.btnLoadFiles.UseVisualStyleBackColor = true;
-            this.btnLoadFiles.Click += new System.EventHandler(this.btnLoadFiles_Click);
             // 
             // dataGridView3
             // 

@@ -86,6 +86,24 @@ namespace MultiQueueModels
             }
             return 0;
         }
+        public SimulationCase MakeRow(int CustNo) 
+        {
+            Random rn = new Random();
+            SimulationCase sm = new SimulationCase();
+            sm.CustomerNumber=CustNo;
+            if (CustNo == 1)
+            {
+                sm.ArrivalTime = 0;
+                sm.RandomInterArrival = 0;
+                sm.InterArrival = 0;
+                sm.RandomService = rn.Next(1, 100);
+                //how to know service time?
+            }
+            else { sm.RandomInterArrival = rn.Next(1,100); }
+
+            return sm;
+
+        }
 
     }
 }
