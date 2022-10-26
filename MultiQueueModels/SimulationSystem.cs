@@ -262,7 +262,18 @@ private void Selection_methods(ref SimulationCase next_customer, List<int> serve
             calculate_service_time(ref next_customer);
             Servers[next_customer.AssignedServer.ID - 1].TotalWorkingTime += next_customer.ServiceTime;
         }
-        public SimulationCase MakeRow(int CustNo)
+        //go through each customer and make call function MakeRow
+        public List<SimulationCase> MakeTable(int NoCusts, List<int> Servers)
+        {
+            List<SimulationCase> totalTable=new List<SimulationCase>();
+            for(int i = 0; i < NoCusts; i++)
+            {
+                totalTable.Add(MakeRow(i,Servers));
+            }
+            return totalTable;
+
+        }
+        public SimulationCase MakeRow(int CustNo, List<int> Servers)
         {
             Random rn = new Random();
             SimulationCase sm = new SimulationCase();
@@ -278,8 +289,14 @@ private void Selection_methods(ref SimulationCase next_customer, List<int> serve
             }
             else { sm.RandomInterArrival = rn.Next(1, 100); }
             calculate_service_time(ref sm);
-            //how to get list of servers
-           // Selection_methods(ref sm,);
+            select_Random(ref sm,Servers);
+           
+            Selection_methods(ref sm,Servers);
+            select_HighestPriority(ref sm, Servers);
+            check_Priority(ref sm);
+            select_LeastUtilization(ref sm, Servers);
+            calculate_service_time(ref sm);
+            //time in queue????
             return sm;
 
         }
