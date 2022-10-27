@@ -32,10 +32,9 @@ namespace MultiQueueModels
         Random r_s_id = new Random();
         Random r_s = new Random();
 
-
-        public void startSimulation() { }
         public void DistributionTimeCustomer(List<int> inter_arrival_time, List<decimal> probability)
         {
+            //@@list is full of data no need to add to it
             int customerCount = inter_arrival_time.Count;
             //for first customer
             InterarrivalDistribution.Add(new TimeDistribution());
@@ -91,27 +90,26 @@ namespace MultiQueueModels
             }
             return 0;
         }
+
+        //@@ me
         private void calculate_service_time(ref SimulationCase next_customer)
         {
-
             next_customer.RandomService = r_s.Next(1, 100);
             int used_index = (next_customer.AssignedServer.ID) - 1;
-            int l = Servers[used_index].TimeDistribution.Count;
+            int timeCasesCount = Servers[used_index].TimeDistribution.Count;
 
-            for (int i = 0; i < l; i++)
+            for (int i = 0; i < timeCasesCount; i++)
             {
 
-                if (next_customer.RandomService >= Servers[next_customer.AssignedServer.ID - 1].TimeDistribution[i].MinRange &&
-                    next_customer.RandomService <= Servers[next_customer.AssignedServer.ID - 1].TimeDistribution[i].MaxRange)
+                if (next_customer.RandomService >= Servers[used_index].TimeDistribution[i].MinRange &&
+                    next_customer.RandomService <= Servers[used_index].TimeDistribution[i].MaxRange)
                 {
 
-                    next_customer.ServiceTime = Servers[next_customer.AssignedServer.ID - 1].TimeDistribution[i].Time;
+                    next_customer.ServiceTime = Servers[used_index].TimeDistribution[i].Time;
                     break;
                 }
-
             }
-
-            next_customer.EndTime = next_customer.ServiceTime + next_customer.StartTime;
+            next_customer.EndTime = next_customer.StartTime + next_customer.ServiceTime;
         }
         private void check_Priority(ref SimulationCase next_customer)
         {
@@ -210,6 +208,7 @@ namespace MultiQueueModels
         }
         private void Selection_methods(ref SimulationCase next_customer, List<int> server)
         {
+            //@@check first if server is free??
             // priority Selcetion Method   
             if (SelectionMethod == Enums.SelectionMethod.HighestPriority)
                 select_HighestPriority(ref next_customer, server);
@@ -268,39 +267,44 @@ namespace MultiQueueModels
         public List<SimulationCase> MakeTable(int NoCusts, List<int> Servers)
         {
             List<SimulationCase> totalTable = new List<SimulationCase>();
+            //@@ stopping condition?
             for (int i = 0; i < NoCusts; i++)
             {
                 totalTable.Add(MakeRow(i, Servers));
             }
             return totalTable;
-
         }
-        public SimulationCase MakeRow(int CustNo, List<int> Servers )
+        public SimulationCase MakeRow(int CustNo, List<int> Servers)
         {
             Random rn = new Random();
             SimulationCase sm = new SimulationCase();
             sm.CustomerNumber = CustNo;
+            //@@ first one is num 0
             if (CustNo == 1)
             {
-                sm.ArrivalTime = 0;
                 sm.RandomInterArrival = 0;
                 sm.InterArrival = 0;
+                sm.ArrivalTime = 0;
+                //@@ max value exclusive 
                 sm.RandomService = rn.Next(1, 100);
-
-
             }
             else { sm.RandomInterArrival = rn.Next(1, 100); }
-            //random serveice time
+            //@@ InterArrival ArrivalTime ?
+            //random service time
+            //@@ calculated multiple times
             sm.RandomService = rn.Next(1, 100);
+            //@@ selection method inc.
             select_Random(ref sm, Servers);
             //select server
-             Selection_methods(ref sm, Servers);
+            Selection_methods(ref sm, Servers);
             check_Priority(ref sm);
-           //calculate service time
-           
-            calculate_service_time(ref sm);
+            //@@ calc delay in queue before service time
+            //@@ delay inc.
             //time in qeueu
             sm.TimeInQueue = sm.InterArrival - sm.StartTime;
+            //calculate service time
+            calculate_service_time(ref sm);
+     
             return sm;
 
         }
