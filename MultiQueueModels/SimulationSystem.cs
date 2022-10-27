@@ -187,10 +187,10 @@ namespace MultiQueueModels
                 next_customer.TimeInQueue = min_diffrence;
                 next_customer.StartTime = next_customer.ArrivalTime + next_customer.TimeInQueue;  // get the time in the queue and the start time of the service  
 
-                if (Nearset_will_be_available.Count == 1)
-                    next_customer.AssignedServer.ID = Nearest_will_be_available[0];
+                if (Nearset_will_be_available.Count == 1){
+                    next_customer.AssignedServer.ID = Nearset_will_be_available[0];
                 calculate_service_time(ref next_customer);
-                Servers[next_customer.AssignedServer.ID - 1].TotalWorkingTime += next_customer.ServiceTime;
+                Servers[next_customer.AssignedServer.ID - 1].TotalWorkingTime += next_customer.ServiceTime;}
 
                 else if (Nearset_will_be_available.Count > 1)
                 {
