@@ -79,9 +79,7 @@ namespace MultiQueueModels
             return totalTable;
         }
         public SimulationCase MakeRow(int CustNo, int lastCustArrivalTime)
-        {
-      
-          
+        {        
             SimulationCase sm = new SimulationCase();
             sm.CustomerNumber = CustNo;
             //First Customer
@@ -170,11 +168,10 @@ namespace MultiQueueModels
                     selectRandomServer(ref newCustomer);
                     break;
                 case Enums.SelectionMethod.LeastUtilization:
-                    return;
+                    selectLeastUtilization(ref newCustomer);
                     break;
                 default:
                     return;
-                    break;
             }
         }
         //1-return assigned server 2-time in queue
@@ -245,6 +242,22 @@ namespace MultiQueueModels
             }
 
         }
+        //Least Utilization  
+        private void selectLeastUtilization(ref SimulationCase newCustomer)
+        {
+            decimal leastUtil=1000M;
+            int index=0;
+            foreach (var server in Servers)
+            {
+                if (server.Utilization < leastUtil)
+                {
+                    leastUtil = server.Utilization;
+                    index = server.ID - 1;
+                }
+            }
+            newCustomer.AssignedServer = Servers[index];
+            newCustomer.TimeInQueue = Servers[index].FinishTime - newCustomer.ArrivalTime;
+        }
         //Assign Service start time end
         private void CalculateServiceTime(ref SimulationCase newCustomer)
         {
@@ -261,6 +274,14 @@ namespace MultiQueueModels
             //
             Servers[newCustomer.AssignedServer.ID - 1].FinishTime = newCustomer.EndTime;
             Servers[newCustomer.AssignedServer.ID - 1].TotalWorkingTime += newCustomer.AssignedServer.FinishTime;
+            if (TotalTime == 0)
+            {
+                Servers[newCustomer.AssignedServer.ID - 1].Utilization = 100M;
+            }
+            else
+            {
+                Servers[newCustomer.AssignedServer.ID - 1].Utilization = (decimal)Servers[newCustomer.AssignedServer.ID - 1].TotalWorkingTime / (decimal)TotalTime;
+            }
         }
         /*
         private void calculate_service_time(ref SimulationCase next_customer)

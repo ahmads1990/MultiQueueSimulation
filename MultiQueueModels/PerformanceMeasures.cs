@@ -18,6 +18,7 @@ namespace MultiQueueModels
         {
             CalculateAverageWaitingTime(ref SimulationTable);
             CalculateWaitingProbability(ref SimulationTable);
+            CalculateMaxQueueLength(ref SimulationTable);
         }
         public void CalculateAverageWaitingTime(ref List<SimulationCase> SimulationTable)
         {
@@ -28,7 +29,6 @@ namespace MultiQueueModels
             }
             AverageWaitingTime = ((decimal)total_time_customer_waited / (decimal)SimulationTable.Count);
         }
-
         public decimal CalculateWaitingProbability(ref List<SimulationCase> SimulationTable)
         {
 
@@ -44,7 +44,18 @@ namespace MultiQueueModels
             return WaitingProbability;
         }
         // max queue lentgh
-
+        public void CalculateMaxQueueLength(ref List<SimulationCase> SimulationTable)
+        {
+            int max = 0;
+            foreach (var simCase in SimulationTable)
+            {
+                if (simCase.TimeInQueue > max)
+                {
+                    max = simCase.TimeInQueue;
+                }
+            }
+            MaxQueueLength = max;
+        }
 
     }
 }
