@@ -172,11 +172,16 @@ namespace MultiQueueSimulation
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnStartSimulation(object sender, EventArgs e)
         {
-            valiadateAndRun();
+            //validate and assign data to new simulation system object
+            valiadateAssignData();
+            //start sim
+            simulationSystem.StartSimulation();
+            string result = TestingManager.Test(simulationSystem, Constants.FileNames.TestCase1);
+            Console.WriteLine();
         }
-        private void valiadateAndRun()
+        private void valiadateAssignData()
         {
             //check servers count
             if (serversCount <= 0) { return; }
@@ -205,11 +210,12 @@ namespace MultiQueueSimulation
                         //service time
                         distribution.Time = (int)dgv.Rows[row].Cells[0].Value;
                         //prop
-                        distribution.Probability = (decimal)((int)dgv.Rows[row].Cells[1].Value / 100);
+                        decimal temp = (int)dgv.Rows[row].Cells[1].Value;
+                        distribution.Probability = temp / 100M;
                         currServer.TimeDistribution.Add(distribution);
                     }
                     //check if summ of prop is 100
-                    if (currServer.TimeDistribution.Sum(x => Convert.ToInt32(x.Probability)) * 100 == 100)
+                    if (currServer.TimeDistribution.Sum(x => Convert.ToInt32(x.Probability * 100)) == 100)
                         serversList.Add(currServer);
                     else return;
                 }
@@ -229,11 +235,13 @@ namespace MultiQueueSimulation
                     //Interarrival  Time
                     distribution.Time = (int)dataGridView2.Rows[row].Cells[0].Value;
                     //prop
-                    distribution.Probability = (decimal)dataGridView2.Rows[row].Cells[1].Value / 100;
+                    decimal temp = (int)dataGridView2.Rows[row].Cells[1].Value;
+
+                    distribution.Probability = temp / 100M;
                     InterarrivalDistribution.Add(distribution);
                 }
                 //check if summ of prop is 100
-                if (InterarrivalDistribution.Sum(x => Convert.ToInt32(x.Probability)) * 100 != 100)
+                if (InterarrivalDistribution.Sum(x => Convert.ToInt32(x.Probability * 100)) != 100)
                     return;
             }
             catch (Exception)
@@ -254,6 +262,7 @@ namespace MultiQueueSimulation
             simulationSystem.Servers = serversList;
             simulationSystem.InterarrivalDistribution = InterarrivalDistribution;
             simulationSystem.StoppingCriteria = StoppingCriteria;
+            simulationSystem.StoppingNumber = StoppingNumber;
             simulationSystem.SelectionMethod = SelectionMethod;
         }
 
@@ -261,5 +270,7 @@ namespace MultiQueueSimulation
         {
 
         }
+
+
     }
 }

@@ -14,30 +14,34 @@ namespace MultiQueueModels
         public decimal WaitingProbability { get; set; }
 
         //---------------------------------------------------------
-        public decimal Avareg_wating_time(ref SimulationSystem simulation_system, ref PerformanceMeasures avargewatingtime)
+        public void CalculatePerformanceMeasures(ref List<SimulationCase> SimulationTable)
+        {
+            CalculateAverageWaitingTime(ref SimulationTable);
+            CalculateWaitingProbability(ref SimulationTable);
+        }
+        public void CalculateAverageWaitingTime(ref List<SimulationCase> SimulationTable)
         {
             int total_time_customer_waited = 0;
-            for (int i = 0; i < simulation_system.SimulationTable.Count; i++)
+            for (int i = 0; i < SimulationTable.Count; i++)
             {
-                total_time_customer_waited += simulation_system.SimulationTable[i].TimeInQueue;
+                total_time_customer_waited += SimulationTable[i].TimeInQueue;
             }
-            avargewatingtime.AverageWaitingTime = total_time_customer_waited / simulation_system.SimulationTable.Count;
-            return avargewatingtime.AverageWaitingTime;
+            AverageWaitingTime = total_time_customer_waited / SimulationTable.Count;
         }
 
-        public decimal waiting_probability(ref SimulationSystem simulation_system, ref PerformanceMeasures waiting_probability)
+        public decimal CalculateWaitingProbability(ref List<SimulationCase> SimulationTable)
         {
 
             int counter = 0;
-            for (int i = 0; i < simulation_system.SimulationTable.Count; i++)
+            for (int i = 0; i < SimulationTable.Count; i++)
             {
-                if (simulation_system.SimulationTable[i].TimeInQueue > 0)
+                if (SimulationTable[i].TimeInQueue > 0)
                 {
                     counter++;
                 }
             }
-            waiting_probability.WaitingProbability = counter / simulation_system.SimulationTable.Count;
-            return waiting_probability.WaitingProbability;
+            WaitingProbability = counter / SimulationTable.Count;
+            return WaitingProbability;
         }
         // max queue lentgh
 
