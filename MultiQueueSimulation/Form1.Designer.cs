@@ -48,6 +48,14 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.txtbx_NoServers = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.dataGridView4 = new System.Windows.Forms.DataGridView();
+            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -60,25 +68,17 @@
             this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.dataGridView4 = new System.Windows.Forms.DataGridView();
-            this.Column11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column13 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column14 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabControl2 = new System.Windows.Forms.TabControl();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.serversTabControl.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
             this.tabPage4.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -113,7 +113,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(954, 435);
+            this.tabPage1.Size = new System.Drawing.Size(1040, 435);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Input Data";
             this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
@@ -280,6 +280,68 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Number of Servers";
             // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.dataGridView4);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(1040, 435);
+            this.tabPage5.TabIndex = 2;
+            this.tabPage5.Text = "Interarrival Distribution ";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView4
+            // 
+            this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView4.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column11,
+            this.Column12,
+            this.Column13,
+            this.Column14});
+            this.dataGridView4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView4.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView4.Name = "dataGridView4";
+            this.dataGridView4.Size = new System.Drawing.Size(1040, 435);
+            this.dataGridView4.TabIndex = 0;
+            // 
+            // Column11
+            // 
+            this.Column11.HeaderText = "Interarrival  Time";
+            this.Column11.Name = "Column11";
+            // 
+            // Column12
+            // 
+            this.Column12.HeaderText = "Probability";
+            this.Column12.Name = "Column12";
+            // 
+            // Column13
+            // 
+            this.Column13.HeaderText = "Cumulative probability ";
+            this.Column13.Name = "Column13";
+            // 
+            // Column14
+            // 
+            this.Column14.HeaderText = "Range";
+            this.Column14.Name = "Column14";
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.tabControl2);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(1040, 435);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Servers Distribution ";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // tabControl2
+            // 
+            this.tabControl2.Location = new System.Drawing.Point(23, 33);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(582, 316);
+            this.tabControl2.TabIndex = 0;
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.dataGridView3);
@@ -362,68 +424,6 @@
             this.Column10.HeaderText = "Time in Queue";
             this.Column10.Name = "Column10";
             // 
-            // tabPage5
-            // 
-            this.tabPage5.Controls.Add(this.dataGridView4);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(954, 435);
-            this.tabPage5.TabIndex = 2;
-            this.tabPage5.Text = "Interarrival Distribution ";
-            this.tabPage5.UseVisualStyleBackColor = true;
-            // 
-            // dataGridView4
-            // 
-            this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView4.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column11,
-            this.Column12,
-            this.Column13,
-            this.Column14});
-            this.dataGridView4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView4.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView4.Name = "dataGridView4";
-            this.dataGridView4.Size = new System.Drawing.Size(954, 435);
-            this.dataGridView4.TabIndex = 0;
-            // 
-            // Column11
-            // 
-            this.Column11.HeaderText = "Interarrival  Time";
-            this.Column11.Name = "Column11";
-            // 
-            // Column12
-            // 
-            this.Column12.HeaderText = "Probability";
-            this.Column12.Name = "Column12";
-            // 
-            // Column13
-            // 
-            this.Column13.HeaderText = "Cumulative probability ";
-            this.Column13.Name = "Column13";
-            // 
-            // Column14
-            // 
-            this.Column14.HeaderText = "Range";
-            this.Column14.Name = "Column14";
-            // 
-            // tabControl2
-            // 
-            this.tabControl2.Location = new System.Drawing.Point(23, 33);
-            this.tabControl2.Name = "tabControl2";
-            this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(582, 316);
-            this.tabControl2.TabIndex = 0;
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.tabControl2);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(954, 435);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Servers Distribution ";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -440,11 +440,11 @@
             this.serversTabControl.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.tabPage5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
             this.tabPage4.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
             this.ResumeLayout(false);
 
         }

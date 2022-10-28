@@ -273,7 +273,7 @@ namespace MultiQueueModels
             //newCustomer.AssignedServer.TotalWorkingTime = newCustomer.AssignedServer.FinishTime;
             //
             Servers[newCustomer.AssignedServer.ID - 1].FinishTime = newCustomer.EndTime;
-            Servers[newCustomer.AssignedServer.ID - 1].TotalWorkingTime += newCustomer.AssignedServer.FinishTime;
+            Servers[newCustomer.AssignedServer.ID - 1].TotalWorkingTime += newCustomer.ServiceTime;
             if (TotalTime == 0)
             {
                 Servers[newCustomer.AssignedServer.ID - 1].Utilization = 100M;
