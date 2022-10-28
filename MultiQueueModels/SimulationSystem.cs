@@ -17,6 +17,7 @@ namespace MultiQueueModels
             this.InterarrivalDistribution = new List<TimeDistribution>();
             this.PerformanceMeasures = new PerformanceMeasures();
             this.SimulationTable = new List<SimulationCase>();
+            TotalTime = 0;
         }
 
         ///////////// INPUTS ///////////// 
@@ -49,7 +50,7 @@ namespace MultiQueueModels
             PerformanceMeasures.CalculatePerformanceMeasures(ref temp);
         }
         //total time of services
-        int TotalTime = 0;
+        public int TotalTime { get; set; }
         public List<SimulationCase> MakeSimulationTable(int NoCusts)
         {
             List<SimulationCase> totalTable = new List<SimulationCase>();
