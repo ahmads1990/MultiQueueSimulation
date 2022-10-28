@@ -355,7 +355,16 @@ namespace MultiQueueModels
         }
         private void select_HighestPriority(ref SimulationCase next_customer, List<int> server)
         {
-            next_customer.AssignedServer.ID = server[0];
+            for (int i = 0; i < Servers.Count; i++)
+            {
+                //check if server is idel and check if Strat time of customer after the last work the server done
+                if (Servers[i].IdleProbability > 0||next_customer.StartTime>Servers[i].FinishTime)
+                {
+                    next_customer.AssignedServer.ID = server[i];
+                    
+                    break;
+                }
+            }
             calculate_service_time(ref next_customer);
 
             Servers[next_customer.AssignedServer.ID - 1].TotalWorkingTime += next_customer.ServiceTime;
