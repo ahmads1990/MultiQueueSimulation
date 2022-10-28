@@ -131,7 +131,7 @@ namespace MultiQueueSimulation
                 }
             }
         }
-
+      
         private int checkInteger(string input, int max, int min)
         {
             int result;
