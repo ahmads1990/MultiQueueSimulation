@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections; 
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,24 +53,24 @@ namespace MultiQueueModels
         {
             List<SimulationCase> totalTable = new List<SimulationCase>();
             //add first customer as special case
-            totalTable.Add(MakeRow(1,0));
+            totalTable.Add(MakeRow(1, 0));
             //check stoppingCriteria then
             //go through each customer and make call function MakeRow
             if (StoppingCriteria == Enums.StoppingCriteria.NumberOfCustomers)
             {
                 for (int i = 2; i < NoCusts; i++)
                 {
-                    SimulationCase current = MakeRow(i,totalTable.Last().ArrivalTime);
+                    SimulationCase current = MakeRow(i, totalTable.Last().ArrivalTime);
                     //CalcTime(current, totalTable.ElementAt(i-2));
                     totalTable.Add(current);
                 }
             }
             else
-            { 
+            {
                 int count = 1;
-                while(TotalTime<=StoppingNumber)
+                while (TotalTime <= StoppingNumber)
                 {
-                    SimulationCase current = MakeRow(count,0);
+                    SimulationCase current = MakeRow(count, 0);
 
                     //CalcTime(current, totalTable.ElementAt(count - 1));
                     totalTable.Add(current);
@@ -106,7 +106,7 @@ namespace MultiQueueModels
                 }
                 //Select server
                 Selector(ref sm);
-              
+
                 //Calculate service time
                 CalculateServiceTime(ref sm);
             }
@@ -166,19 +166,19 @@ namespace MultiQueueModels
                     selectHighestPriority(ref newCustomer);
                     break;
                 case Enums.SelectionMethod.Random:
-                    return ;
+                    return;
                     break;
                 case Enums.SelectionMethod.LeastUtilization:
-                    return ;
+                    return;
                     break;
                 default:
-                    return ;
+                    return;
                     break;
             }
         }
         //1-return assigned server 2-time in queue
         //Highest Priority ,Priority = Index Order
-        private void selectHighestPriority( ref SimulationCase newCustomer)
+        private void selectHighestPriority(ref SimulationCase newCustomer)
         {
             int serverId = 0;
             int nearestFreeTime = 10000000;
@@ -355,16 +355,7 @@ namespace MultiQueueModels
         }
         private void select_HighestPriority(ref SimulationCase next_customer, List<int> server)
         {
-            for (int i = 0; i < Servers.Count; i++)
-            {
-                //check if server is idel and check if Strat time of customer after the last work the server done
-                if (Servers[i].IdleProbability > 0||next_customer.StartTime>Servers[i].FinishTime)
-                {
-                    next_customer.AssignedServer.ID = server[i];
-                    
-                    break;
-                }
-            }
+            next_customer.AssignedServer.ID = server[0];
             calculate_service_time(ref next_customer);
 
             Servers[next_customer.AssignedServer.ID - 1].TotalWorkingTime += next_customer.ServiceTime;
