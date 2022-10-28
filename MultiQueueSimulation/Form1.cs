@@ -180,6 +180,7 @@ namespace MultiQueueSimulation
             simulationSystem.StartSimulation();
             string result = TestingManager.Test(simulationSystem, Constants.FileNames.TestCase1);
             Console.WriteLine();
+            DisplaySimulationData();
         }
         private void valiadateAssignData()
         {
@@ -265,12 +266,69 @@ namespace MultiQueueSimulation
             simulationSystem.StoppingNumber = StoppingNumber;
             simulationSystem.SelectionMethod = SelectionMethod;
         }
-
+        //show Data
+        private void DisplaySimulationData()
+        {
+            //InterArrival dgv4
+            dataGridView4.Rows.Clear();
+            foreach (var item in simulationSystem.InterarrivalDistribution)
+            {       
+                //Interarrival  Time Probability Cumulative probability Rang
+                string range = $"{item.MinRange}-{item.MaxRange}";
+                dataGridView4.Rows.Add(item.Time, item.Probability, item.CummProbability, range);
+            }
+            //Servers
+            tabControl2.TabPages.Clear();
+            foreach (var server in simulationSystem.Servers)
+            {
+                //Create Tab Page
+                string title = "Server " + server.ID.ToString();
+                TabPage newTab = new TabPage(title);
+                DataGridView newServerdg = new DataGridView();
+                newServerdg.Name = title;
+                newServerdg.Dock = DockStyle.Fill;
+                newServerdg.ColumnCount = 4;
+                newServerdg.Columns[0].Name = "Service Time";
+                newServerdg.Columns[1].Name = "Probability";
+                newServerdg.Columns[2].Name = "Cumulative probability";
+                newServerdg.Columns[3].Name = "Range";         
+                //add data in it
+                foreach (var dist in server.TimeDistribution)
+                {
+                    //Service Time Probability Cumulative probability Range
+                    string range = $"{dist.MinRange}-{dist.MaxRange}";
+                    newServerdg.Rows.Add(dist.Time, dist.Probability, dist.CummProbability,range);
+                }
+                newTab.Controls.Add(newServerdg);
+                tabControl2.TabPages.Add(newTab);
+            }
+            dataGridView3.Rows.Clear();
+            //Simulartion Table
+            foreach (var simCase in simulationSystem.SimulationTable)
+            {
+                //dgv3         
+                dataGridView3.Rows.Add(
+                    simCase.CustomerNumber,
+                    simCase.RandomInterArrival,
+                    simCase.InterArrival,
+                    simCase.ArrivalTime,
+                    simCase.RandomService,
+                    simCase.AssignedServer.ID,
+                    simCase.StartTime,
+                    simCase.ServiceTime,
+                    simCase.EndTime,
+                    simCase.TimeInQueue
+                    );
+            }
+        }
         private void tabPage1_Click(object sender, EventArgs e)
         {
 
         }
 
+        private void dataGridView3_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
 
+        }
     }
 }
