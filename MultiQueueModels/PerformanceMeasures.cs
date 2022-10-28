@@ -57,22 +57,6 @@ namespace MultiQueueModels
             MaxQueueLength = max;
         }
 
-        public decimal probOfIdleServer(ref Server serverID, ref SimulationSystem totalTime)
-        {
-            decimal probability = 0;
-            probability = serverID.ID / totalTime.TotalTime;
-            return probability;
-        }
-        public decimal averageServiceTime(ref List<SimulationCase> SimCase){
-            decimal average = 0;
-            int total_time_Service = 0;
-            for (int i = 0; i < SimCase.Count; i++)
-            {
-                total_time_Service += SimCase[i].ServiceTime;
-            }
-            average = (decimal)total_time_Service / (decimal)SimCase.Count;
-            return average;
-            }
     }
 }
 

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics.Eventing.Reader;
-using System.IO;
 
 namespace MultiQueueModels
 {
@@ -17,7 +16,6 @@ namespace MultiQueueModels
             this.InterarrivalDistribution = new List<TimeDistribution>();
             this.PerformanceMeasures = new PerformanceMeasures();
             this.SimulationTable = new List<SimulationCase>();
-            TotalTime = 0;
         }
 
         ///////////// INPUTS ///////////// 
@@ -50,7 +48,7 @@ namespace MultiQueueModels
             PerformanceMeasures.CalculatePerformanceMeasures(ref temp);
         }
         //total time of services
-        public int TotalTime { get; set; }
+        int TotalTime = 0;
         public List<SimulationCase> MakeSimulationTable(int NoCusts)
         {
             List<SimulationCase> totalTable = new List<SimulationCase>();
@@ -284,113 +282,6 @@ namespace MultiQueueModels
             {
                 Servers[newCustomer.AssignedServer.ID - 1].Utilization = (decimal)Servers[newCustomer.AssignedServer.ID - 1].TotalWorkingTime / (decimal)TotalTime;
             }
-        }
-        private int checkInteger(string input, int max, int min)
-        {
-            int result;
-            if (Int32.TryParse(input, out result))
-            {
-                if (result > max && result < min) { return 0; }
-                else return result;
-            }
-            else { return 0; }
-        }
-
-        public SimulationSystem ReadFile(string name)
-        {
-            int serversCount = 0;
-            SimulationSystem simulationSystem = new SimulationSystem();
-            bool textIsComplete = true;
-            using (StreamReader reader = new StreamReader(name))
-            {
-                string line;
-                while ((line = reader.ReadLine()) != null && textIsComplete)
-                {
-                    //check for number of servers
-                    if (line.Equals("NumberOfServers"))
-                    {
-                        line = reader.ReadLine();
-                        serversCount = checkInteger(line, 100, 1);
-                        //simulationSystem.Servers = new List<Server>(serversCount);
-                        if (serversCount <= 0) textIsComplete = false;
-
-                    }
-                    else if (line.Equals("StoppingNumber"))
-                    {
-                        line = reader.ReadLine();
-                        int result = checkInteger(line, 1000, 1);
-                        if (result > 0)
-                            simulationSystem.StoppingNumber = result;
-                        else
-                            textIsComplete = false;
-                    }
-                    else if (line.Equals("StoppingCriteria"))
-                    {
-                        line = reader.ReadLine();
-                        int result = checkInteger(line, 2, 1);
-                        if (result > 0)
-                            simulationSystem.StoppingCriteria = (Enums.StoppingCriteria)result;
-                        else
-                            textIsComplete = false;
-                    }
-                    else if (line.Equals("SelectionMethod"))
-                    {
-                        line = reader.ReadLine();
-                        int result = checkInteger(line, 3, 1);
-                        if (result > 0)
-                            simulationSystem.SelectionMethod = (Enums.SelectionMethod)result;
-                        else
-                            textIsComplete = false;
-                    }
-                    else if (line.Equals("InterarrivalDistribution"))
-                    {
-                        while (true)
-                        {
-                            line = reader.ReadLine();
-                            if (line == "") break;
-                            string[] columns = line.Split(',');
-                            simulationSystem.InterarrivalDistribution.Add(
-                                new TimeDistribution
-                                {
-                                    Time = int.Parse(columns[0]),
-                                    Probability = decimal.Parse(columns[1].Trim())
-                                }
-                                );
-                        }
-                    }
-                    else if (line.Equals("ServiceDistribution_Server1"))
-                    {
-                        //read servers ServiceDistribution
-
-                        int serverIndex = 1;
-                        while (serverIndex <= serversCount)
-                        {
-                            Server n = new Server();
-                            n.ID = serverIndex;
-                            //test
-                            while (true)
-                            {
-                                line = reader.ReadLine();
-                                if (line == null) break;
-                                if (line == "")
-                                {
-                                    line = reader.ReadLine();
-                                    break;
-                                }
-                                string[] columns = line.Split(',');
-                                TimeDistribution t = new TimeDistribution();
-                                t.Time = (int.Parse(columns[0]));
-                                t.Probability = decimal.Parse(columns[1].Trim());
-                                n.TimeDistribution.Add(t);
-
-                            }
-                            simulationSystem.Servers.Add(n);
-                            serverIndex++;
-                        }
-                    }
-                }
-            }
-            return simulationSystem;
         }
         /*
         private void calculate_service_time(ref SimulationCase next_customer)
