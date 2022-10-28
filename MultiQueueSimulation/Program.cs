@@ -18,8 +18,8 @@ namespace MultiQueueSimulation
         {
             string one = "D:\\Study\\Modelling & Simulation\\Tasks\\Task 1\\MultiQueueSimulation\\MultiQueueSimulation\\TestCases\\TestCase1.txt";
             SimulationSystem system = new SimulationSystem();
-            //system = system.ReadFile(one);
-            //system.StartSimulation();
+            system = system.ReadFile(one);
+            system.StartSimulation();
             string result = TestingManager.Test(system, Constants.FileNames.TestCase1);
             MessageBox.Show(result);
             Application.EnableVisualStyles();

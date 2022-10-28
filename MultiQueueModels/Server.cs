@@ -12,6 +12,7 @@ namespace MultiQueueModels
         {
             this.TimeDistribution = new List<TimeDistribution>();
             FinishTime = 0;
+            serviceCount = 0;
         }
 
         public int ID { get; set; }
@@ -22,6 +23,7 @@ namespace MultiQueueModels
         public List<TimeDistribution> TimeDistribution;
 
         //optional if needed use them
+        public int serviceCount { get; set; }
         public int FinishTime { get; set; }
         public int TotalWorkingTime { get; set; }
     }

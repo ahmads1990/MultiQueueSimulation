@@ -46,22 +46,38 @@ namespace MultiQueueModels
         // max queue lentgh
         public void CalculateMaxQueueLength(ref List<SimulationCase> SimulationTable)
         {
-            int max = 0;
-            foreach (var simCase in SimulationTable)
+            int totalTime = 0;
+            List<int> times = new List<int>();
+            int currentTime = 0;
+            for (int i = 0; i < SimulationTable.Count; i++)
             {
-                if (simCase.TimeInQueue > max)
+                if (SimulationTable[i].TimeInQueue!=0)
                 {
-                    max = simCase.TimeInQueue;
+                    int queue = 1;
+                    int currentIndex = i;
+                    currentTime=SimulationTable[i].StartTime;
+                    while (currentIndex + 1 < SimulationTable.Count)
+                    {
+                        if (SimulationTable[++currentIndex].ArrivalTime >= currentTime)
+                        {
+                            break;
+                        }
+                        queue++;
+                    }           
+                    times.Add(queue);
                 }
             }
-            MaxQueueLength = max;
+            MaxQueueLength = times.Max();
         }
 
-        public decimal probOfIdleServer(ref Server serverID, ref SimulationSystem totalTime)
+        public void probOfIdleServer(ref List<Server> servers,int TotalTime, int serverId)
         {
             decimal probability = 0;
-            probability = serverID.ID / totalTime.TotalTime;
-            return probability;
+            probability = (decimal)TotalTime-(decimal)servers[serverId-1].TotalWorkingTime / (decimal)TotalTime;
+            
+            servers[serverId - 1].IdleProbability = probability;
+            servers[serverId - 1].AverageServiceTime = (decimal)servers[serverId - 1].TotalWorkingTime
+                / (decimal)servers[serverId - 1].serviceCount;
         }
         public decimal averageServiceTime(ref List<SimulationCase> SimCase){
             decimal average = 0;

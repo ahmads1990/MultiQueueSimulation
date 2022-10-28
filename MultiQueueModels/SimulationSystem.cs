@@ -48,6 +48,11 @@ namespace MultiQueueModels
             //Calculate Performance Measures 
             List<SimulationCase> temp = SimulationTable;
             PerformanceMeasures.CalculatePerformanceMeasures(ref temp);
+            List<Server> temp2 = Servers;
+            foreach (var server in Servers)
+            {
+                PerformanceMeasures.probOfIdleServer(ref temp2, TotalTime, server.ID);
+            }
         }
         //total time of services
         public int TotalTime { get; set; }
@@ -274,6 +279,7 @@ namespace MultiQueueModels
             //  newCustomer.AssignedServer.FinishTime = newCustomer.EndTime;
             //newCustomer.AssignedServer.TotalWorkingTime = newCustomer.AssignedServer.FinishTime;
             //
+            Servers[newCustomer.AssignedServer.ID - 1].serviceCount += 1;
             Servers[newCustomer.AssignedServer.ID - 1].FinishTime = newCustomer.EndTime;
             Servers[newCustomer.AssignedServer.ID - 1].TotalWorkingTime += newCustomer.ServiceTime;
             if (TotalTime == 0)
