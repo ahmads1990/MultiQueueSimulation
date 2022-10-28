@@ -4,6 +4,7 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics.Eventing.Reader;
 
 namespace MultiQueueModels
 {
@@ -29,9 +30,8 @@ namespace MultiQueueModels
         public List<SimulationCase> SimulationTable { get; set; }
         public PerformanceMeasures PerformanceMeasures { get; set; }
 
-        Random r_s_id = new Random();
-        Random r_s = new Random();
-
+        Random randomNum = new Random();
+        private int getRandom() { return randomNum.Next(1, 101); }
         /////SIMULATION TABLE//////////
         public void StartSimulation()
         {
@@ -58,7 +58,7 @@ namespace MultiQueueModels
             //go through each customer and make call function MakeRow
             if (StoppingCriteria == Enums.StoppingCriteria.NumberOfCustomers)
             {
-                for (int i = 2; i < NoCusts; i++)
+                for (int i = 2; i <= NoCusts; i++)
                 {
                     SimulationCase current = MakeRow(i, totalTable.Last().ArrivalTime);
                     //CalcTime(current, totalTable.ElementAt(i-2));
@@ -80,7 +80,8 @@ namespace MultiQueueModels
         }
         public SimulationCase MakeRow(int CustNo, int lastCustArrivalTime)
         {
-            Random rn = new Random();
+      
+          
             SimulationCase sm = new SimulationCase();
             sm.CustomerNumber = CustNo;
             //First Customer
@@ -96,7 +97,7 @@ namespace MultiQueueModels
             }
             else
             {
-                sm.RandomInterArrival = rn.Next(1, 101);
+                sm.RandomInterArrival = getRandom();
                 //mapping for random arrival time 
                 sm.InterArrival = whichRange(sm.RandomInterArrival, InterarrivalDistribution);
                 sm.ArrivalTime = sm.InterArrival + lastCustArrivalTime;
@@ -166,7 +167,7 @@ namespace MultiQueueModels
                     selectHighestPriority(ref newCustomer);
                     break;
                 case Enums.SelectionMethod.Random:
-                    return;
+                    selectRandomServer(ref newCustomer);
                     break;
                 case Enums.SelectionMethod.LeastUtilization:
                     return;
@@ -195,7 +196,7 @@ namespace MultiQueueModels
                 else
                 {
                     //Store to find nearest
-                    if (server.FinishTime <= nearestFreeTime)
+                    if (server.FinishTime < nearestFreeTime)
                     {
                         serverId = server.ID;
                         nearestFreeTime = server.FinishTime;
@@ -206,20 +207,60 @@ namespace MultiQueueModels
             newCustomer.TimeInQueue = nearestFreeTime - newCustomer.ArrivalTime;
             newCustomer.AssignedServer = Servers[serverId - 1];
         }
+        //Random 
+        private void selectRandomServer(ref SimulationCase newCustomer)
+        {
+            List<int> nearFree = new List<int>(Servers.Count);
+            bool freeServers = false;
+            foreach (var server in Servers)
+            {
+                nearFree[server.ID-1] = server.FinishTime;
+                if (server.FinishTime <= newCustomer.ArrivalTime)
+                {
+                    freeServers = true;
+                    break;
+                }
+            }
+            if (freeServers)
+            {
+                //select Random
+                while (true) {
+                    int rn = randomNum.Next(0, Servers.Count);
+                    if (Servers[rn].FinishTime <= newCustomer.ArrivalTime)
+                    {
+                        //found server //assign wait time
+                        newCustomer.TimeInQueue = 0;
+                        newCustomer.AssignedServer = Servers[rn];
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                //select near free
+                int index = nearFree.IndexOf(nearFree.Min());
+                //all servers are busy
+                newCustomer.TimeInQueue = Servers[index].FinishTime - newCustomer.ArrivalTime;
+                newCustomer.AssignedServer = Servers[index];
+            }
+
+        }
         //Assign Service start time end
         private void CalculateServiceTime(ref SimulationCase newCustomer)
         {
-            Random rn = new Random();
-            int RandomService = rn.Next(1, 101);
+            int RandomService = getRandom();
             int serviceTime = whichRange(RandomService, newCustomer.AssignedServer.TimeDistribution);
             //Assign data
             newCustomer.RandomService = RandomService;
             newCustomer.StartTime = newCustomer.ArrivalTime + newCustomer.TimeInQueue;
             newCustomer.ServiceTime = serviceTime;
-            newCustomer.EndTime = newCustomer.ArrivalTime + newCustomer.ServiceTime;
+            newCustomer.EndTime = newCustomer.StartTime + newCustomer.ServiceTime;
             //Change Server Data
-            newCustomer.AssignedServer.FinishTime = newCustomer.EndTime;
-            newCustomer.AssignedServer.TotalWorkingTime = newCustomer.AssignedServer.FinishTime;
+            //  newCustomer.AssignedServer.FinishTime = newCustomer.EndTime;
+            //newCustomer.AssignedServer.TotalWorkingTime = newCustomer.AssignedServer.FinishTime;
+            //
+            Servers[newCustomer.AssignedServer.ID - 1].FinishTime = newCustomer.EndTime;
+            Servers[newCustomer.AssignedServer.ID - 1].TotalWorkingTime += newCustomer.AssignedServer.FinishTime;
         }
         /*
         private void calculate_service_time(ref SimulationCase next_customer)

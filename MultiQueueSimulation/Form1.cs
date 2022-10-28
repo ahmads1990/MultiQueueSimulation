@@ -178,7 +178,7 @@ namespace MultiQueueSimulation
             valiadateAssignData();
             //start sim
             simulationSystem.StartSimulation();
-            string result = TestingManager.Test(simulationSystem, Constants.FileNames.TestCase1);
+            string result = TestingManager.Test(simulationSystem, Constants.FileNames.TestCase2);
             Console.WriteLine();
             DisplaySimulationData();
         }
