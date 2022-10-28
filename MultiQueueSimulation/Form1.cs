@@ -330,5 +330,44 @@ namespace MultiQueueSimulation
         {
 
         }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chart1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged_1(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            chart1.Series.Clear();
+            string s = textBox2.Text;
+            int server = Int32.Parse(s);
+            //simulationSystem.Servers[server].TotalWorkingTime;
+            chart1.Series["Performance"].Points.AddXY(simulationSystem.Servers[server].TotalWorkingTime);
+        }
+
+        private void chart1_Click_1(object sender, EventArgs e)
+        {
+           
+        }
     }
 }
