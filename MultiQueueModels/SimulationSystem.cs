@@ -47,11 +47,13 @@ namespace MultiQueueModels
             List<SimulationCase> temp = SimulationTable;
             PerformanceMeasures.CalculatePerformanceMeasures(ref temp);
         }
+        //total time of services
+        int TotalTime = 0;
         public List<SimulationCase> MakeSimulationTable(int NoCusts)
         {
             List<SimulationCase> totalTable = new List<SimulationCase>();
             //add first customer as special case
-            totalTable.Add(MakeRow(1));
+            totalTable.Add(MakeRow(0));
             //check stoppingCriteria then
             //go through each customer and make call function MakeRow
             if (StoppingCriteria == Enums.StoppingCriteria.NumberOfCustomers)
@@ -64,12 +66,12 @@ namespace MultiQueueModels
                 }
             }
             else
-            {
-                for (int i = 1; i < StoppingNumber; i++)
+            { int count = 1;
+                while(TotalTime<=StoppingNumber)
                 {
-                    SimulationCase current = MakeRow(i);
+                    SimulationCase current = MakeRow(count);
 
-                    CalcTime(current, totalTable.ElementAt(i - 1));
+                    CalcTime(current, totalTable.ElementAt(count - 1));
                     totalTable.Add(current);
                 }
             }
@@ -81,7 +83,7 @@ namespace MultiQueueModels
             SimulationCase sm = new SimulationCase();
             sm.CustomerNumber = CustNo;
             //First Customer
-            if (CustNo == 1)
+            if (CustNo == 0)
             {
                 sm.RandomInterArrival = 1;
                 sm.InterArrival = 0;
@@ -95,17 +97,14 @@ namespace MultiQueueModels
             }
             //random service time
             sm.RandomService = rn.Next(1, 101);
-            //@@ selection method inc.
-            //Selection_methods(ref sm, Servers);
-            //select_Random(ref sm, Servers);
+            
             check_Priority(ref sm);
-            //@@ calc delay in queue before service time 
-            //@@ delay inc.
+            
             //time in qeueu
             sm.TimeInQueue = sm.InterArrival - sm.StartTime;
             //calculate service time
             calculate_service_time(ref sm);
-
+            TotalTime += sm.ServiceTime + sm.TimeInQueue;
             return sm;
         }
         public void CalcTime(SimulationCase currnt, SimulationCase last)
