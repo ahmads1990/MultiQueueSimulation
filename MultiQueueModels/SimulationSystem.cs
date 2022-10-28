@@ -267,10 +267,25 @@ namespace MultiQueueModels
         public List<SimulationCase> MakeTable(int NoCusts, List<int> Servers)
         {
             List<SimulationCase> totalTable = new List<SimulationCase>();
-            //@@ stopping condition?
-            for (int i = 0; i < NoCusts; i++)
+            //done   //@@ stopping condition?
+            totalTable.Add(MakeRow(0, Servers));
+            if (StoppingCriteria== Enums.StoppingCriteria.NumberOfCustomers) {
+                for (int i = 1; i < NoCusts; i++)
+                {
+                    SimulationCase currnt = MakeRow(i, Servers);
+                    CalcTime(currnt, totalTable.ElementAt(i--));
+                    totalTable.Add(currnt);
+                } 
+            }
+            else
             {
-                totalTable.Add(MakeRow(i, Servers));
+                for (int i = 1; i < StoppingNumber; i++)
+                {
+                    SimulationCase currnt = MakeRow(i, Servers);
+                  
+                    CalcTime(currnt, totalTable.ElementAt(i--));
+                    totalTable.Add(currnt);
+                }
             }
             return totalTable;
         }
@@ -279,26 +294,29 @@ namespace MultiQueueModels
             Random rn = new Random();
             SimulationCase sm = new SimulationCase();
             sm.CustomerNumber = CustNo;
-            //@@ first one is num 0
-            if (CustNo == 1)
+         //done   //@@ first one is num 0
+            if (CustNo == 0)
             {
                 sm.RandomInterArrival = 0;
                 sm.InterArrival = 0;
                 sm.ArrivalTime = 0;
-                //@@ max value exclusive 
-                sm.RandomService = rn.Next(1, 100);
+             
             }
-            else { sm.RandomInterArrival = rn.Next(1, 100); }
-            //@@ InterArrival ArrivalTime ?
+            else { sm.RandomInterArrival = rn.Next(1, 101); }
+            //mapping for random arrival time 
+           sm.InterArrival= whichRange(sm.RandomInterArrival,InterarrivalDistribution);
+          
+           
             //random service time
-            //@@ calculated multiple times
-            sm.RandomService = rn.Next(1, 100);
+            
+            sm.RandomService = rn.Next(1, 101);
             //@@ selection method inc.
-            select_Random(ref sm, Servers);
-            //select server
             Selection_methods(ref sm, Servers);
+            select_Random(ref sm, Servers);
+            
+          
             check_Priority(ref sm);
-            //@@ calc delay in queue before service time
+            //@@ calc delay in queue before service time 
             //@@ delay inc.
             //time in qeueu
             sm.TimeInQueue = sm.InterArrival - sm.StartTime;
@@ -306,6 +324,11 @@ namespace MultiQueueModels
             calculate_service_time(ref sm);
      
             return sm;
+
+        }
+        public void CalcTime(SimulationCase currnt,SimulationCase last)
+        {
+            currnt.ArrivalTime = currnt.InterArrival + last.InterArrival;
 
         }
     }
