@@ -4,6 +4,7 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics.Eventing.Reader;
 
 namespace MultiQueueModels
 {
@@ -166,7 +167,7 @@ namespace MultiQueueModels
                     selectHighestPriority(ref newCustomer);
                     break;
                 case Enums.SelectionMethod.Random:
-                    return;
+                    selectRandomServer(ref newCustomer);
                     break;
                 case Enums.SelectionMethod.LeastUtilization:
                     return;
@@ -205,6 +206,44 @@ namespace MultiQueueModels
             //all servers are busy
             newCustomer.TimeInQueue = nearestFreeTime - newCustomer.ArrivalTime;
             newCustomer.AssignedServer = Servers[serverId - 1];
+        }
+        //Random 
+        private void selectRandomServer(ref SimulationCase newCustomer)
+        {
+            List<int> nearFree = new List<int>(Servers.Count);
+            bool freeServers = false;
+            foreach (var server in Servers)
+            {
+                nearFree[server.ID-1] = server.FinishTime;
+                if (server.FinishTime <= newCustomer.ArrivalTime)
+                {
+                    freeServers = true;
+                    break;
+                }
+            }
+            if (freeServers)
+            {
+                //select Random
+                while (true) {
+                    int rn = randomNum.Next(0, Servers.Count);
+                    if (Servers[rn].FinishTime <= newCustomer.ArrivalTime)
+                    {
+                        //found server //assign wait time
+                        newCustomer.TimeInQueue = 0;
+                        newCustomer.AssignedServer = Servers[rn];
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                //select near free
+                int index = nearFree.IndexOf(nearFree.Min());
+                //all servers are busy
+                newCustomer.TimeInQueue = Servers[index].FinishTime - newCustomer.ArrivalTime;
+                newCustomer.AssignedServer = Servers[index];
+            }
+
         }
         //Assign Service start time end
         private void CalculateServiceTime(ref SimulationCase newCustomer)
