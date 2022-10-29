@@ -78,16 +78,24 @@ namespace MultiQueueModels
             }
             else
             {
-                int count = 1;
+                int count = 2;
                 while (TotalTime <= StoppingNumber)
                 {
-                    SimulationCase current = MakeRow(count, 0);
+                    SimulationCase current = MakeRow(count, totalTable.Last().ArrivalTime);
 
                     //CalcTime(current, totalTable.ElementAt(count - 1));
                     totalTable.Add(current);
                     totalCustomers++;
+                    count++;
                 }
             }
+            /*
+            if (totalTable.Last().EndTime > StoppingNumber
+                &&StoppingCriteria==Enums.StoppingCriteria.SimulationEndTime)
+            {
+                totalTable.RemoveAt(totalTable.Count() - 1);
+            }
+            */
             return totalTable;
         }
         public SimulationCase MakeRow(int CustNo, int lastCustArrivalTime)
@@ -121,7 +129,11 @@ namespace MultiQueueModels
                 //Calculate service time
                 CalculateServiceTime(ref sm);
             }
-            TotalTime += sm.ServiceTime + sm.TimeInQueue;
+            //TotalTime += sm.ServiceTime + sm.TimeInQueue;
+            if (sm.EndTime > TotalTime)
+            {
+                TotalTime = sm.EndTime;
+            }
             return sm;
         }
         public void CalcTime(SimulationCase currnt, SimulationCase last)
