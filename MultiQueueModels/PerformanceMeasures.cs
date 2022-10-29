@@ -73,9 +73,14 @@ namespace MultiQueueModels
         public void probOfIdleServer(ref List<Server> servers,int TotalTime, int serverId, int totalCustomer)
         {
             decimal probability = 0;
+            /*
+             *  probability = ((decimal)servers[serverId-1].TotalWorkingTime) / (decimal)TotalTime;
+            
+            servers[serverId - 1].IdleProbability = 1m-probability;
+             */
             probability = ((decimal)TotalTime-(decimal)servers[serverId-1].TotalWorkingTime) / (decimal)TotalTime;
             
-            servers[serverId - 1].IdleProbability = 1m/probability;
+            servers[serverId - 1].IdleProbability = probability;
             servers[serverId - 1].AverageServiceTime = (decimal)servers[serverId - 1].TotalWorkingTime
                 / (decimal)servers[serverId-1].serviceCount;
         }
