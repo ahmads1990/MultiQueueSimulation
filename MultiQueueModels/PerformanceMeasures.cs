@@ -51,11 +51,11 @@ namespace MultiQueueModels
             int currentTime = 0;
             for (int i = 0; i < SimulationTable.Count; i++)
             {
-                if (SimulationTable[i].TimeInQueue!=0)
+                if (SimulationTable[i].TimeInQueue != 0)
                 {
                     int queue = 1;
                     int currentIndex = i;
-                    currentTime=SimulationTable[i].StartTime;
+                    currentTime = SimulationTable[i].StartTime;
                     while (currentIndex + 1 < SimulationTable.Count)
                     {
                         if (SimulationTable[++currentIndex].ArrivalTime >= currentTime)
@@ -63,11 +63,15 @@ namespace MultiQueueModels
                             break;
                         }
                         queue++;
-                    }           
+                    }
                     times.Add(queue);
                 }
             }
-            MaxQueueLength = times.Max();
+
+            if (times.Count == 0)
+                MaxQueueLength = 0;
+            else
+                MaxQueueLength = times.Max();
         }
 
         public void probOfIdleServer(ref List<Server> servers,int TotalTime, int serverId, int totalCustomer)
@@ -81,8 +85,16 @@ namespace MultiQueueModels
             probability = ((decimal)TotalTime-(decimal)servers[serverId-1].TotalWorkingTime) / (decimal)TotalTime;
             
             servers[serverId - 1].IdleProbability = probability;
-            servers[serverId - 1].AverageServiceTime = (decimal)servers[serverId - 1].TotalWorkingTime
-                / (decimal)servers[serverId-1].serviceCount;
+        
+            if (servers[serverId - 1].serviceCount==0)
+            {
+                servers[serverId - 1].AverageServiceTime = 0;
+            }
+            else
+            {
+                servers[serverId - 1].AverageServiceTime = (decimal)servers[serverId - 1].TotalWorkingTime
+            / (decimal)servers[serverId - 1].serviceCount;
+            }
         }
         public decimal averageServiceTime(ref List<SimulationCase> SimCase){
             decimal average = 0;
