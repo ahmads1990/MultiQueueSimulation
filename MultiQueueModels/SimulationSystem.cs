@@ -55,6 +55,16 @@ namespace MultiQueueModels
             {
                 PerformanceMeasures.probOfIdleServer(ref temp2, TotalTime, server.ID, totalCustomers);
             }
+            //util
+            foreach (var server in Servers)
+            {
+                server.Utilization = (decimal)server.TotalWorkingTime / (decimal)TotalTime;
+                /*
+                 *    Servers[newCustomer.AssignedServer.ID - 1].Utilization =
+                (decimal)Servers[newCustomer.AssignedServer.ID - 1].TotalWorkingTime
+                / (decimal)TotalTime;
+                 * */
+            }
         }
         //total time of services
         public int TotalTime { get; set; }
@@ -71,7 +81,6 @@ namespace MultiQueueModels
                 for (int i = 2; i <= NoCusts; i++)
                 {
                     SimulationCase current = MakeRow(i, totalTable.Last().ArrivalTime);
-                    //CalcTime(current, totalTable.ElementAt(i-2));
                     totalTable.Add(current);
                     totalCustomers++;
                 }
@@ -119,10 +128,12 @@ namespace MultiQueueModels
                 //mapping for random arrival time 
                 sm.InterArrival = whichRange(sm.RandomInterArrival, InterarrivalDistribution);
                 sm.ArrivalTime = sm.InterArrival + lastCustArrivalTime;
+                /*
                 if (CustNo == 3)
                 {
                     Console.WriteLine();
                 }
+                */
                 //Select server
                 Selector(ref sm);
 
@@ -301,11 +312,18 @@ namespace MultiQueueModels
             Servers[newCustomer.AssignedServer.ID - 1].TotalWorkingTime += newCustomer.ServiceTime;
             if (TotalTime == 0)
             {
-                Servers[newCustomer.AssignedServer.ID - 1].Utilization = 100M;
+                Servers[newCustomer.AssignedServer.ID - 1].Utilization = 1M;
             }
             else
             {
-                Servers[newCustomer.AssignedServer.ID - 1].Utilization = (decimal)Servers[newCustomer.AssignedServer.ID - 1].TotalWorkingTime / (decimal)TotalTime;
+                if (newCustomer.CustomerNumber == 50)
+                {
+                    Console.WriteLine();
+                }
+                
+                Servers[newCustomer.AssignedServer.ID - 1].Utilization =
+                    (decimal)Servers[newCustomer.AssignedServer.ID - 1].TotalWorkingTime
+                    / (decimal)TotalTime;
             }
         }
         private int checkInteger(string input, int max, int min)

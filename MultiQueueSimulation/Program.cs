@@ -17,11 +17,11 @@ namespace MultiQueueSimulation
         static void Main()
         {
             string one = "D:\\Study\\Modelling & Simulation\\Tasks\\Task 1\\MultiQueueSimulation" +
-                "\\MultiQueueSimulation\\TestCases\\TestCase1.txt";
+                "\\MultiQueueSimulation\\TestCases\\TestCase3.txt";
             SimulationSystem system = new SimulationSystem();
             system = system.ReadFile(one);
             system.StartSimulation();
-            string result = TestingManager.Test(system, Constants.FileNames.TestCase1);
+            string result = TestingManager.Test(system, Constants.FileNames.TestCase3);
             MessageBox.Show(result);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

@@ -321,6 +321,22 @@ namespace MultiQueueSimulation
                     simCase.TimeInQueue
                     );
             }
+
+            //Performance Measures
+            txtbx_AvgWait.Text = simulationSystem.PerformanceMeasures.AverageWaitingTime.ToString();
+            txtbx_MaxQueue.Text = simulationSystem.PerformanceMeasures.MaxQueueLength.ToString();
+            textBox5.Text = simulationSystem.PerformanceMeasures.WaitingProbability.ToString();
+
+            dataGridView5.Rows.Clear();
+            foreach (var server in simulationSystem.Servers)
+            {
+                dataGridView5.Rows.Add(
+                    server.ID,
+                    server.IdleProbability,
+                    server.AverageServiceTime,
+                    server.Utilization
+                    );
+            }
         }
         private void tabPage1_Click(object sender, EventArgs e)
         {
@@ -374,8 +390,9 @@ namespace MultiQueueSimulation
                     int start = cust.StartTime;
                     int end = cust.EndTime;
                     int counter = start;
-                    while (counter++<=end)
+                    while (true)
                     {
+                        if (++counter > end) { break; }
                         y[counter - 1] = 1;
                     }
                 }
