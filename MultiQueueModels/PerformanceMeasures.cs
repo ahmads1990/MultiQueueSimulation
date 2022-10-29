@@ -70,14 +70,14 @@ namespace MultiQueueModels
             MaxQueueLength = times.Max();
         }
 
-        public void probOfIdleServer(ref List<Server> servers,int TotalTime, int serverId)
+        public void probOfIdleServer(ref List<Server> servers,int TotalTime, int serverId, int totalCustomer)
         {
             decimal probability = 0;
-            probability = (decimal)TotalTime-(decimal)servers[serverId-1].TotalWorkingTime / (decimal)TotalTime;
+            probability = ((decimal)TotalTime-(decimal)servers[serverId-1].TotalWorkingTime) / (decimal)TotalTime;
             
-            servers[serverId - 1].IdleProbability = probability;
+            servers[serverId - 1].IdleProbability = 1m/probability;
             servers[serverId - 1].AverageServiceTime = (decimal)servers[serverId - 1].TotalWorkingTime
-                / (decimal)servers[serverId - 1].serviceCount;
+                / (decimal)servers[serverId-1].serviceCount;
         }
         public decimal averageServiceTime(ref List<SimulationCase> SimCase){
             decimal average = 0;

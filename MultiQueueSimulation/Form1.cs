@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MultiQueueModels;
 using MultiQueueTesting;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace MultiQueueSimulation
 {
@@ -358,11 +359,32 @@ namespace MultiQueueSimulation
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-            chart1.Series.Clear();
+            chart1.Series["Series1"].Points.Clear();
             string s = textBox2.Text;
             int server = Int32.Parse(s);
             //simulationSystem.Servers[server].TotalWorkingTime;
-            chart1.Series["Performance"].Points.AddXY(simulationSystem.Servers[server].TotalWorkingTime);
+            //x time y if busy
+            var x = Enumerable.Range(0, simulationSystem.TotalTime).ToList();
+            var y= Enumerable.Repeat(0, x.Count()).ToList();
+            foreach (var cust in simulationSystem.SimulationTable)
+            {
+                if (cust.AssignedServer.ID==server)
+                {
+                    //start end
+                    int start = cust.StartTime;
+                    int end = cust.EndTime;
+                    int counter = start;
+                    while (counter++<=end)
+                    {
+                        y[counter - 1] = 1;
+                    }
+                }
+            }
+            for (int i = 0; i < x.Count(); i++)
+            {
+                chart1.Series["Series1"].Points.AddXY(x[i], y[i]);
+            }
+           
         }
 
         private void chart1_Click_1(object sender, EventArgs e)

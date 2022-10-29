@@ -18,6 +18,7 @@ namespace MultiQueueModels
             this.PerformanceMeasures = new PerformanceMeasures();
             this.SimulationTable = new List<SimulationCase>();
             TotalTime = 0;
+            totalCustomers = 0;
         }
 
         ///////////// INPUTS ///////////// 
@@ -33,6 +34,7 @@ namespace MultiQueueModels
         public PerformanceMeasures PerformanceMeasures { get; set; }
 
         Random randomNum = new Random();
+        public int totalCustomers {get;set;}
         private int getRandom() { return randomNum.Next(1, 101); }
         /////SIMULATION TABLE//////////
         public void StartSimulation()
@@ -51,7 +53,7 @@ namespace MultiQueueModels
             List<Server> temp2 = Servers;
             foreach (var server in Servers)
             {
-                PerformanceMeasures.probOfIdleServer(ref temp2, TotalTime, server.ID);
+                PerformanceMeasures.probOfIdleServer(ref temp2, TotalTime, server.ID, totalCustomers);
             }
         }
         //total time of services
@@ -61,6 +63,7 @@ namespace MultiQueueModels
             List<SimulationCase> totalTable = new List<SimulationCase>();
             //add first customer as special case
             totalTable.Add(MakeRow(1, 0));
+            totalCustomers++;
             //check stoppingCriteria then
             //go through each customer and make call function MakeRow
             if (StoppingCriteria == Enums.StoppingCriteria.NumberOfCustomers)
@@ -70,6 +73,7 @@ namespace MultiQueueModels
                     SimulationCase current = MakeRow(i, totalTable.Last().ArrivalTime);
                     //CalcTime(current, totalTable.ElementAt(i-2));
                     totalTable.Add(current);
+                    totalCustomers++;
                 }
             }
             else
@@ -81,6 +85,7 @@ namespace MultiQueueModels
 
                     //CalcTime(current, totalTable.ElementAt(count - 1));
                     totalTable.Add(current);
+                    totalCustomers++;
                 }
             }
             return totalTable;
