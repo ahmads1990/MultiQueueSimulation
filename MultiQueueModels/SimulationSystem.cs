@@ -312,7 +312,7 @@ namespace MultiQueueModels
             Servers[newCustomer.AssignedServer.ID - 1].TotalWorkingTime += newCustomer.ServiceTime;
             if (TotalTime == 0)
             {
-                Servers[newCustomer.AssignedServer.ID - 1].Utilization = 1M;
+                Servers[newCustomer.AssignedServer.ID - 1].Utilization = 0M;
             }
             else
             {
